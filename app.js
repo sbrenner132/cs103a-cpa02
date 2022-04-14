@@ -14,14 +14,16 @@ dotenv.config();
 
 // es module setup
 
-import { fileURLToPath } from 'url';
+import {
+    fileURLToPath
+} from 'url';
 
 const __filename = fileURLToPath(
     import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // setting up mongoose
-console.log(process.env)
+
 import mongoose from 'mongoose';
 const mongo_URI = `mongodb+srv://sbrenner:${process.env.MONGO_SECRET}@cluster0.uhhej.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const db = mongoose.connection;
@@ -43,9 +45,13 @@ app.set('view engine', 'ejs');
 app.use(layouts);
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -61,7 +67,9 @@ app.use(
 // This section defines the routes the Express server will respond to //
 // ****************************************************************** //
 
-import { home } from './routes/index.js';
+import {
+    home
+} from './routes/index.js';
 
 app.use('/', home);
 
@@ -101,4 +109,4 @@ server.on('listening', () => {
     const addr = server.address();
     const bind = typeof addr === 'string' ? `Pipe ${addr}` : `Port ${addr.port}`;
     debug(`Listening on ${bind}`);
-})
+});
