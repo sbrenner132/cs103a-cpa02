@@ -7,6 +7,11 @@ import bodyParser from 'body-parser';
 import debug from 'debug';
 import layouts from 'express-ejs-layouts';
 
+// dotenv setup
+
+import dotenv from 'dotenv';
+dotenv.config();
+
 // es module setup
 
 import { fileURLToPath } from 'url';
@@ -16,9 +21,9 @@ const __filename = fileURLToPath(
 const __dirname = path.dirname(__filename);
 
 // setting up mongoose
-
+console.log(process.env)
 import mongoose from 'mongoose';
-const mongo_URI = 'mongodb+srv://sbrenner:RvzPuiW0JijQHR4V@cluster0.uhhej.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const mongo_URI = `mongodb+srv://sbrenner:${process.env.MONGO_SECRET}@cluster0.uhhej.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const db = mongoose.connection;
 
 mongoose.connect(mongo_URI, {
@@ -46,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
     session({
-        secret: "s%3Al3ozSdvQ83TtC5RvJ.CibaQoHtaY0H3QOB1kqR8H2A",
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false
     })
@@ -55,6 +60,10 @@ app.use(
 // ****************************************************************** //
 // This section defines the routes the Express server will respond to //
 // ****************************************************************** //
+
+import { home } from './routes/index.js';
+
+app.use('/', home);
 
 app.use((_req, _res, next) => {
     next(createError(404));
@@ -79,11 +88,9 @@ server.on('error', (error) => {
             case 'EACCES':
                 console.error(`${bind} requires elevated privileges`);
                 process.exit(1);
-                break;
             case 'EADDRINUSE':
-                console.bind(`${bind} is already in use`);
+                console.error(`${bind} is already in use`);
                 process.exit(1);
-                break;
             default:
                 throw error;
         }
