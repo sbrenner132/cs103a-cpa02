@@ -1,0 +1,35 @@
+{
+    "name": "cs103a-cpa02",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sbrenner132/cs103a-cpa02.git"
+    },
+    "author": "Sam Brenner",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/sbrenner132/cs103a-cpa02/issues"
+    },
+    "homepage": "https://github.com/sbrenner132/cs103a-cpa02#readme",
+    "dependencies": {
+        "axios": "^0.26.1",
+        "body-parser": "^1.19.2",
+        "connect-flash": "^0.1.1",
+        "cookie-parser": "~1.4.4",
+        "debug": "~2.6.9",
+        "ejs": "~2.6.1",
+        "express": "~4.16.1",
+        "express-ejs-layouts": "^2.5.1",
+        "express-session": "^1.16.2",
+        "http-errors": "~1.6.3",
+        "mongoose": "^5.9.21",
+        "nodemon": "^2.0.15"
+    }
+}
