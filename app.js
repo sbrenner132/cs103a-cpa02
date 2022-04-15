@@ -86,7 +86,7 @@ app.use((_req, _res, next) => {
 
 // setting up the http connection
 
-const port = process.env.PORT || '5000';
+const port = process.env.PORT || '3000';
 app.set('port', port);
 
 import http from 'http';
