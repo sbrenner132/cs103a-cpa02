@@ -18,7 +18,6 @@ router.use((req, res, next) => {
 
 router.post('/login', (req, res, next) => {
     try {
-        console.log(req.body)
         const {
             username,
             password
@@ -66,7 +65,6 @@ router.post('/signup', (req, res, next) => {
             });
 
             user.save().then(() => {
-                console.log('here?')
                 req.session.username = user.username;
                 req.session.user = user;
                 res.redirect('/');

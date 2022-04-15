@@ -31,7 +31,9 @@
         "express-session": "^1.16.2",
         "font-awesome": "^4.7.0",
         "http-errors": "~1.6.3",
-        "mongoose": "^5.9.21",
+        "mongoose": "^5.9.21"
+    },
+    "devDependencies": {
         "nodemon": "^2.0.15"
     }
 }
