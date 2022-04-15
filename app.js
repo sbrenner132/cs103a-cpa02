@@ -33,7 +33,7 @@ mongoose.connect(mongo_URI, {
     useUnifiedTopology: true,
 });
 db.on('error', console.error.bind(console, 'mongoose connection error'));
-db.on('open', () => console.log('connected to mongoose without problems'));
+db.on('open', console.log.bind(console, 'connected to mongoose without problems'));
 
 // setting up express server
 
@@ -63,15 +63,22 @@ app.use(
     })
 );
 
+// auth setup
+
+import auth from './routes/auth.js';
+app.use(auth);
+
 // ****************************************************************** //
 // This section defines the routes the Express server will respond to //
-// ****************************************************************** //
+// ****************************************************************** //    
 
-import {
-    home
-} from './routes/index.js';
+app.get('/', (req, res, next) => {
+    res.render('index');
+});
 
-app.use('/', home);
+app.get('/register', (req, res, next) => {
+    res.render('register');
+});
 
 app.use((_req, _res, next) => {
     next(createError(404));
