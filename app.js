@@ -72,12 +72,33 @@ app.use(auth);
 // This section defines the routes the Express server will respond to //
 // ****************************************************************** //    
 
-app.get('/', (req, res, next) => {
+const isLoggedIn = (_req, res, next) => {
+    if (res.locals.loggedIn) {
+        next();
+    } else res.redirect('/')
+}
+
+const loadFriends = async (req, res, next) => {
+    // res.locals.friends = req.session.user.friends;
+    const friend_ids = req.session.user.friends;
+    const friends = await Promise.all(friend_ids.map(async (id) => {
+        const friend = await User.findById(id);
+        return friend.name;
+    }));
+    res.locals.friends = friends;
+    next();
+}
+
+app.get('/', (_req, res, next) => {
     res.render('index');
 });
 
-app.get('/register', (req, res, next) => {
+app.get('/register', (_req, res, next) => {
     res.render('register');
+});
+
+app.get('/create', isLoggedIn, loadFriends, (req, res, _next) => {
+    res.render('createBook');
 });
 
 app.use((_req, _res, next) => {
@@ -90,6 +111,7 @@ const port = process.env.PORT || '3000';
 app.set('port', port);
 
 import http from 'http';
+import User from './models/User.js';
 const server = http.createServer(app);
 
 server.listen(port);
@@ -116,10 +138,4 @@ server.on('listening', () => {
     const addr = server.address();
     const bind = typeof addr === 'string' ? `Pipe ${addr}` : `Port ${addr.port}`;
     debug(`Listening on ${bind}`);
-});
-
-process.on('SIGINT', function () {
-    console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
-    // some other closing procedures go here
-    process.exit(0);
 });

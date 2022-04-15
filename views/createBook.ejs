@@ -1,0 +1,70 @@
+<div class="pt-5 pb-3 justify-content-between d-flex flex-column align-items-center w-100 h-50">
+    <h1 class="display-4 pb-3">Let's Start a Collaborative Story!</h1>
+    <form class="d-flex flex-row justify-content-evenly w-100 ">
+        <div class="d-flex flex-column">
+            <div class="card rounded-3 shadow p-3">
+                <div class="card-header">
+                    <h4 class="card-title">Starting with the Basics</h4>
+                </div>
+                <div class="card-body">
+                    <p>Please provide some basic information and access for your story.</p>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <div class="form-outline flex-fill mb-0">
+                            <input required type="text" id="title" class="form-control" name="title" />
+                            <label class="form-label" for="title">Title</label>
+                        </div>
+                    </div>
+                    <div class="form-check pb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="public" name="public" />
+                        <label class="form-check-label" for="public">Public</label>
+                    </div>
+                    <select id="friends" class="classic">
+                        <option selected disabled hidden>Select Friends</option>
+                        <% friends.forEach(friend => { %>
+                            <option value="<%= friend %>"><%= friend %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column w-50">
+            <div class="card rounded shadow p-3">
+                <div class="card-header">
+                    <h4 class="card-title">Adding some spice</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-outline w-100 mb-4">
+                        <textarea required class="form-control" id="theme" rows="8" name="" theme></textarea>
+                        <label class="form-label" for="theme">Theme</label>
+                    </div>
+                    <input class="form-control" id="tag" placeholder="Add a tag" />
+                    <div class="pt-3" id="tags"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    const node = document.getElementById('tag');
+    node.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            const tag = node.value;
+            const html =
+                `<div class="chip">${tag}<span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span></div>`;
+            const tags = document.getElementById('tags');
+            tags.innerHTML = html + tags.innerHTML;
+            node.value = '';
+        }
+    });
+
+    const checkbox = document.querySelector("#public");
+    checkbox.addEventListener('change', () => {
+        const friends = document.getElementById('friends');
+        const disabled = !!friends.getAttribute('disabled');
+        if (disabled) {
+            friends.removeAttribute('disabled');
+        } else {
+            friends.setAttribute('disabled', 'true');
+        }
+    });
+</script>

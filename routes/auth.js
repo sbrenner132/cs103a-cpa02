@@ -51,7 +51,7 @@ router.post('/signup', (req, res, next) => {
             name
         } = req.body;
         if (password !== repeat) {
-            res.redirect('/signup');
+            res.redirect('/register');
         } else {
             const hash = crypto.createHash('sha256');
             hash.update(password);

@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon app.js"
+        "start-dev": "nodemon app.js"
     },
     "repository": {
         "type": "git",
@@ -34,6 +34,7 @@
         "mongoose": "^5.9.21"
     },
     "devDependencies": {
+        "kill-port": "^1.6.1",
         "nodemon": "^2.0.15"
     }
 }

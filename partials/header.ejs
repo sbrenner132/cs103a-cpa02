@@ -22,15 +22,17 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Browse Finished Books</a>
         </li>
+        <% if (!!loggedIn) { %>
         <li class="nav-item">
           <a class="nav-link" href="#">My Library</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Start a New Book</a>
+          <a class="nav-link" href="/create">Start a New Book</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Find Friends</a>
         </li>
+        <% } %>
       </ul>
       <!-- Left links -->
     </div>
