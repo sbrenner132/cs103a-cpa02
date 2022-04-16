@@ -60,6 +60,10 @@ const lookUpUsers = async (req, res, next) => {
 
 const trimUsersToCardData = async (req, _res, next) => {
     const docs = req.body.docs;
+    if (!docs.length) {
+        req.body.results = [undefined];
+        next();
+    }
     req.body.results = await Promise.all(docs.map(async (doc) => {
         const {
             _id,
