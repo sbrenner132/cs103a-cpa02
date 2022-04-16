@@ -8,6 +8,7 @@ const userSchema = Schema({
     email: String,
     friends: Array,
     color: String,
+    outgoingRequests: Array
 });
 
 export default mongoose.model('User', userSchema);

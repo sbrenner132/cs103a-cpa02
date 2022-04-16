@@ -77,11 +77,15 @@ import {
     loadFriends,
     bookCount,
     lookUpUsers,
-    trimUsersToCardData
+    trimUsersToCardData,
+    loadNotifs,
+    sendRequest,
+    filterFriendRequests
 } from './routes/user.js';
-import Book from './models/Book.js'
+import Book from './models/Book.js';
 
-app.get('/', (_req, res, next) => {
+app.get('/', loadNotifs, (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
     res.render('index');
 });
 
@@ -89,13 +93,14 @@ app.get('/register', (_req, res, next) => {
     res.render('register');
 });
 
-app.get('/create', isLoggedIn, loadFriends, bookCount, (req, res, _next) => {
+app.get('/create', isLoggedIn, loadNotifs, loadFriends, bookCount, (req, res, _next) => {
     res.locals.friends = req.body.friends;
     res.locals.bookCount = req.body.bookCount;
+    res.locals.notifs = req.body.notifs;
     res.render('createBook');
 });
 
-app.post('/create', (req, res, next) => {
+app.post('/create', isLoggedIn, loadNotifs, (req, res, next) => {
     const {
         title,
         theme,
@@ -124,15 +129,27 @@ app.post('/create', (req, res, next) => {
     }).catch(e => res.redirect('/'));
 });
 
-app.get('/findfriends', isLoggedIn, (req, res, next) => {
+app.get('/findfriends', isLoggedIn, loadNotifs, (req, res, next) => {
     res.locals.results = [];
+    res.locals.notifs = req.body.notifs;
     res.render('findfriends');
 });
 
-app.post('/findfriends', isLoggedIn, lookUpUsers, trimUsersToCardData, (req, res, next) => {
+app.post('/findfriends', isLoggedIn, loadNotifs, lookUpUsers, trimUsersToCardData, (req, res, next) => {
     res.locals.results = req.body.results;
+    res.locals.notifs = req.body.notifs
     res.render('findfriends');
 });
+
+app.post('/requestfriend', isLoggedIn, sendRequest, async (req, res, next) => {
+    res.redirect('/');
+});
+
+app.get('/friends', isLoggedIn, loadNotifs, filterFriendRequests, (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
+    res.locals.requests = req.body.friendRequests;
+    res.render('viewfriends');
+})
 
 app.use((_req, _res, next) => {
     next(createError(404));

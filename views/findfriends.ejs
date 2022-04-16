@@ -28,7 +28,7 @@
         <% if (!!results[0]) { %>
         <% results.forEach(result => { %>
         <div class="p-4">
-            <%- include('../partials/friendcard.ejs', {user: result}) %>
+            <%- include('../partials/usercard.ejs', {potentialUser: result}) %>
         </div>
         <% }) %>
         <% } else { %>
