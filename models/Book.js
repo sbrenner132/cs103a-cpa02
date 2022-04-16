@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 
 const bookSchema = Schema({
     title: String,
-    author_id: Number,
+    author_id: String,
     text: String,
     created: Date,
     public: Boolean,
     tags: Array,
-    editors: Array,
+    collaborators: Array,
 });
 
 export default mongoose.model('Book', bookSchema)

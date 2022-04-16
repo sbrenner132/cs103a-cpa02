@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import crypto from 'crypto';
 import User from '../models/User.js';
+import randomcolor from 'randomcolor';
 
 router.use((req, res, next) => {
     if (req.session.username) {
@@ -61,7 +62,8 @@ router.post('/signup', (req, res, next) => {
                 username,
                 passphrase: encrypted,
                 email,
-                name
+                name,
+                color: randomcolor(),
             });
 
             user.save().then(() => {

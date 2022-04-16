@@ -72,22 +72,12 @@ app.use(auth);
 // This section defines the routes the Express server will respond to //
 // ****************************************************************** //    
 
-const isLoggedIn = (_req, res, next) => {
-    if (res.locals.loggedIn) {
-        next();
-    } else res.redirect('/')
-}
-
-const loadFriends = async (req, res, next) => {
-    // res.locals.friends = req.session.user.friends;
-    const friend_ids = req.session.user.friends;
-    const friends = await Promise.all(friend_ids.map(async (id) => {
-        const friend = await User.findById(id);
-        return friend.name;
-    }));
-    res.locals.friends = friends;
-    next();
-}
+import {
+    isLoggedIn,
+    loadFriends,
+    bookCount
+} from './routes/user.js';
+import Book from './models/Book.js'
 
 app.get('/', (_req, res, next) => {
     res.render('index');
@@ -97,8 +87,43 @@ app.get('/register', (_req, res, next) => {
     res.render('register');
 });
 
-app.get('/create', isLoggedIn, loadFriends, (req, res, _next) => {
+app.get('/create', isLoggedIn, loadFriends, bookCount, (req, res, _next) => {
+    res.locals.friends = req.body.friends;
+    res.locals.bookCount = req.body.bookCount;
     res.render('createBook');
+});
+
+app.post('/create', (req, res, next) => {
+    const {
+        title,
+        theme,
+        pub,
+        start
+    } = req.body;
+    const tags = req.body.tagSet.split('#');
+    const author_id = req.session.user._id;
+    const created = new Date();
+    if (!!pub) {
+        // collaborator logic here, needs friends to work first
+    }
+
+    const book = new Book({
+        title,
+        theme,
+        author_id,
+        created,
+        tags,
+        text: start,
+        public: Boolean(pub)
+    });
+
+    book.save().then(() => {
+        res.redirect('/');
+    }).catch(e => res.redirect('/'));
+});
+
+app.get('/findfriends', isLoggedIn, (req, res, next) => {
+    res.render('findfriends');
 });
 
 app.use((_req, _res, next) => {

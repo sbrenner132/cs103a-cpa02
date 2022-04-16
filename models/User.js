@@ -6,7 +6,8 @@ const userSchema = Schema({
     name: String,
     passphrase: String,
     email: String,
-    friends: Array
+    friends: Array,
+    color: String,
 });
 
 export default mongoose.model('User', userSchema);

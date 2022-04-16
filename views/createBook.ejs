@@ -1,61 +1,100 @@
 <div class="pt-5 pb-3 justify-content-between d-flex flex-column align-items-center w-100 h-50">
     <h1 class="display-4 pb-3">Let's Start a Collaborative Story!</h1>
-    <form class="d-flex flex-row justify-content-evenly w-100 ">
+    <form class="d-flex flex-row justify-content-evenly w-100" method="post" action="/create">
         <div class="d-flex flex-column">
             <div class="card rounded-3 shadow p-3">
                 <div class="card-header">
                     <h4 class="card-title">Starting with the Basics</h4>
                 </div>
                 <div class="card-body">
-                    <p>Please provide some basic information and access for your story.</p>
+                    <p>1. Let's give your story a name!</p>
                     <div class="d-flex flex-row align-items-center mb-4">
                         <div class="form-outline flex-fill mb-0">
                             <input required type="text" id="title" class="form-control" name="title" />
                             <label class="form-label" for="title">Title</label>
                         </div>
                     </div>
-                    <div class="form-check pb-3">
-                        <input class="form-check-input" type="checkbox" value="" id="public" name="public" />
-                        <label class="form-check-label" for="public">Public</label>
+                    <p>2. And what should is be about? This doesn't have to stay the theme forever, it just gives
+                        collaborators an initial direction!</p>
+                    <div class="form-outline w-100 mb-4">
+                        <textarea required class="form-control" id="theme" rows="4" name="theme"></textarea>
+                        <label class="form-label" for="theme">Theme</label>
                     </div>
-                    <select id="friends" class="classic">
-                        <option selected disabled hidden>Select Friends</option>
-                        <% friends.forEach(friend => { %>
-                            <option value="<%= friend %>"><%= friend %></option>
-                        <% }) %>
-                    </select>
+                    <p>3. Give it a starting word!</p>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <div class="form-outline flex-fill mb-0">
+                            <input required type="text" id="start" class="form-control" name="start" />
+                            <label class="form-label" for="start">Starting Word</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="d-flex flex-column w-50">
             <div class="card rounded shadow p-3">
                 <div class="card-header">
-                    <h4 class="card-title">Adding some spice</h4>
+                    <h4 class="card-title">Setting some parameters</h4>
                 </div>
                 <div class="card-body">
-                    <div class="form-outline w-100 mb-4">
-                        <textarea required class="form-control" id="theme" rows="8" name="" theme></textarea>
-                        <label class="form-label" for="theme">Theme</label>
-                    </div>
+                    <p>4. Add some tags for your story, so that people can find it easier!</p>
                     <input class="form-control" id="tag" placeholder="Add a tag" />
                     <div class="pt-3" id="tags"></div>
+                    <input hidden name="tagSet" id="tagset" />
+                    <p>5. Who should see this? If <b>public</b>, everyone will be able to find and add to your story!
+                        Otherwise, you'll be able to select some of your friends to be collaborators!</p>
+                    <div class="form-check pb-3">
+                        <input checked class="form-check-input" type="checkbox" value="" id="public" name="public" />
+                        <label class="form-check-label" for="public">Public</label>
+                    </div>
+                    <select id="friends" class="classic">
+                        <option selected disabled hidden>Select Friends</option>
+                        <% friends.forEach(friend => { %>
+                        <option value="<%= friend %>"><%= friend %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="card-footer d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-lg rounded-8 gradient-custom-2"><span
+                            class="text-white">Go!</span></button>
                 </div>
             </div>
         </div>
     </form>
 </div>
 <script>
-    const node = document.getElementById('tag');
-    node.addEventListener('keyup', (e) => {
+    const tagSet = new Set();
+    const tagnode = document.getElementById('tag');
+    tagnode.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
-            const tag = node.value;
+            const tag = tagnode.value;
+            if (tagSet.has(tag)) {
+                tagnode.value = '';
+                return;
+            }
             const html =
-                `<div class="chip">${tag}<span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span></div>`;
+                `<div class="chip"><span>${tag}</span><span class="closebtn" onclick="handleDelete(this)">&times;</span></div>`;
             const tags = document.getElementById('tags');
             tags.innerHTML = html + tags.innerHTML;
-            node.value = '';
+            tagnode.value = '';
+            tagSet.add(tag);
+            document.getElementById('tagset').value = [...tagSet].join('#');
         }
     });
+
+    const wordnode = document.getElementById('start');
+    wordnode.addEventListener('keyup', (e) => {
+        const text = wordnode.value.slice(0, -1);
+        if (e.key === ' ') {
+            wordnode.value = text;
+        }
+    })
+
+    const handleDelete = (e) => {
+        e.parentElement.style.display = 'none';
+        const tag = e.parentElement.children[0].innerHTML;
+        tagSet.delete(tag);
+        document.getElementById('tagset').value = [...tagSet].join('#');
+    }
 
     const checkbox = document.querySelector("#public");
     checkbox.addEventListener('change', () => {
@@ -67,4 +106,12 @@
             friends.setAttribute('disabled', 'true');
         }
     });
+    window.addEventListener('keydown', function (e) {
+        if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+            if (e.target.nodeName == 'INPUT' && e.target.type == 'text') {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }, true);
 </script>
