@@ -133,3 +133,35 @@ select.classic:focus {
   border-color: grey;
   outline: 0;
 }
+
+.fadeslide {
+  top: 40px;
+  left: 10px;
+  animation: fadeslide ease 2s;
+}
+
+@keyframes fadeslide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.friend-card-bg {
+  background: rgb(240, 202, 238);
+  background: linear-gradient(90deg, rgba(240, 202, 238, 1) 0%, rgba(172, 141, 190, 1) 100%);
+}
+
+.users-scroll {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.users-scroll::-webkit-scrollbar {
+  display: none;
+}

@@ -29,6 +29,7 @@
         "express": "~4.16.1",
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.16.2",
+        "faker": "^5.5.3",
         "font-awesome": "^4.7.0",
         "http-errors": "~1.6.3",
         "mongoose": "^5.9.21",

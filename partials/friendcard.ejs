@@ -1,0 +1,19 @@
+<div class="card rounded-6 shadow text-center" style="height:400px;width: 300px;">
+    <div class=" friend-card-bg hover-overlay ripple h-100" data-mdb-ripple-color="light" style="back">
+        <span class="fa-stack fa-5x">
+            <i class="fa-solid fa-user fa fa-stack-1x" style="color: <%= user.color %>;" alt="User" loading="lazy"></i>
+        </span>
+    </div>
+    <div class="card-body rounded-bottom">
+        <h5 class="card-title"><%= user.name %></h5>
+        <p><%= user.username %></p>
+        <p>Books started: <%= user.bookCount %></p>
+        <p>Friends: <%= user.numFriends %></p>
+        <form>
+            <input hidden value="<%= user._id %>"/>
+            <button type="submit" class="btn btn-primary btn-floating">
+                <i class="fa-solid fa-user-plus"></i>
+            </button>
+        </form>
+    </div>
+</div>

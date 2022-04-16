@@ -20,8 +20,64 @@ const loadFriends = async (req, res, next) => {
 
 const bookCount = async (req, res, next) => {
     const author_id = req.session.user._id;
-    const count = (await Book.find({author_id})).length;
+    const count = _bookCount(author_id);
     req.body.bookCount = count;
+    next();
+}
+
+const _bookCount = async (author_id) => {
+    return await Book.countDocuments({
+        author_id
+    });
+}
+
+const lookUpUsers = async (req, res, next) => {
+    const query = req.body.query;
+    const docs = await User.find({
+        $and: [{
+            $or: [{
+                    name: {
+                        $regex: '.*' + query + '.*',
+                        $options: 'i'
+                    }
+                },
+                {
+                    username: {
+                        $regex: '.*' + query + '.*',
+                        $options: 'i'
+                    }
+                }
+            ]
+        }, {
+            $nor: [{
+                _id: req.session.user._id,
+            },]
+        }]
+    });
+    req.body.docs = docs;
+    next();
+}
+
+const trimUsersToCardData = async (req, _res, next) => {
+    const docs = req.body.docs;
+    req.body.results = await Promise.all(docs.map(async (doc) => {
+        const {
+            _id,
+            name,
+            username,
+            color,
+            friends
+        } = doc;
+        const bookCount = await _bookCount(doc._id);
+        return {
+            _id,
+            name,
+            username,
+            color,
+            numFriends: friends.length,
+            bookCount
+        }
+    }));
     next();
 }
 
@@ -29,4 +85,6 @@ export {
     isLoggedIn,
     loadFriends,
     bookCount,
+    lookUpUsers,
+    trimUsersToCardData
 }

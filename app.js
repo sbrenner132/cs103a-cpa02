@@ -75,7 +75,9 @@ app.use(auth);
 import {
     isLoggedIn,
     loadFriends,
-    bookCount
+    bookCount,
+    lookUpUsers,
+    trimUsersToCardData
 } from './routes/user.js';
 import Book from './models/Book.js'
 
@@ -123,6 +125,12 @@ app.post('/create', (req, res, next) => {
 });
 
 app.get('/findfriends', isLoggedIn, (req, res, next) => {
+    res.locals.results = [];
+    res.render('findfriends');
+});
+
+app.post('/findfriends', isLoggedIn, lookUpUsers, trimUsersToCardData, (req, res, next) => {
+    res.locals.results = req.body.results;
     res.render('findfriends');
 });
 
