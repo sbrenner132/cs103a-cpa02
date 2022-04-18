@@ -14,7 +14,7 @@ const notifSchema = Schema({
     },
     sent: {
         type: Date,
-        default: Date.now()
+        default: new Date()
     },
     clientMessage: String,
 });
