@@ -13,11 +13,11 @@
       <b><%= request.from.name %></b>
     </div>
     <div style="flex: 2" class="d-flex flex-row justify-content-around">
-      <form>
+      <form method="post" action="/acceptFriendRequest">
         <input hidden name="notif_id" value="<%= request._id %>">
         <button class="btn btn-success">Accept</button>
       </form>
-      <form>
+      <form method="post" action="/rejectFriendRequest">
         <input hidden name="notif_id" value="<%= request._id %>">
         <button class="btn btn-danger">Reject</button>
       </form>

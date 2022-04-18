@@ -17,6 +17,9 @@ import randomColor from 'randomcolor';
 import User from '../models/User.js';
 
 const testNum = 20;
+
+const save = async (user) => await user.save();
+
 for (let i = 0; i < testNum; i++) {
     const person = faker.name;
 
@@ -34,10 +37,7 @@ for (let i = 0; i < testNum; i++) {
         color
     });
 
-    try {
-        await user.save();
-    } catch (e) {
-        console.error(e);
-    }
+    save(user);
 }
+
 process.exit(1);

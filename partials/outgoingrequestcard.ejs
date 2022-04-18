@@ -13,7 +13,7 @@
         <b><%= outgoing.for.name %></b>
       </div>
       <div style="flex: 2" class="d-flex flex-row-reverse">
-        <form>
+        <form method="post" action="/rejectFriendRequest">
           <input hidden name="notif_id" value="<%= outgoing.notif_id %>">
           <button class="btn btn-warning">Cancel</button>
         </form>

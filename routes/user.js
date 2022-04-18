@@ -35,25 +35,29 @@ const _bookCount = async (author_id) => {
 
 const lookUpUsers = async (req, res, next) => {
     const query = req.body.query;
+
+    // defining invalid options in results (self + friends)
+    const invalid = [...req.session.user.friends];
+    invalid.push(req.session.user._id);
+
     const docs = await User.find({
-        $and: [{
-            $or: [{
-                name: {
-                    $regex: '.*' + query + '.*',
-                    $options: 'i'
-                }
-            },
-            {
-                username: {
-                    $regex: '.*' + query + '.*',
-                    $options: 'i'
-                }
+        $or: [{
+            name: {
+                $regex: '.*' + query + '.*',
+                $options: 'i'
             }
-            ]
-        }, {
-            $nor: [{
-                _id: req.session.user._id,
-            },]
+        },
+        {
+            username: {
+                $regex: '.*' + query + '.*',
+                $options: 'i'
+            }
+        }
+        ],
+        $nor: [{
+            _id: {
+                $in: invalid
+            }
         }]
     });
     req.body.docs = docs;
@@ -100,7 +104,7 @@ const loadNotifs = async (req, _res, next) => {
             new: function () {
                 return Math.ceil(Math.abs(Date.now() - notif.sent) / (1000 * 60 * 60 * 24)) < 5;
             }, timeSince: function () {
-                const diff = Math.abs(Date.now() - notif.sent) / 1000;
+                const diff = Math.floor(Math.abs(Date.now() - notif.sent) / 1000);
                 if (diff < 60) {
                     return `${diff} seconds ago`;
                 } else if (diff < 3600) {
@@ -166,21 +170,16 @@ const sendRequest = async (req, _res, next) => {
     }
 
     // add to outgoing requests
-    const sendingUser = await User.findById(outgoing_id);
-    const requests = sendingUser.outgoingRequests;
-    requests.push(requesting_id);
-
     try {
-        await User.updateOne({
-            _id: outgoing_id
-        }, {
-            $set: {
-                outgoingRequests: requests
+        await User.findByIdAndUpdate(outgoing_id, {
+            $push: {
+                outgoingRequests: requesting_id
             }
         });
-        const updated = await User.findById(outgoing_id);
-        req.session.username = updated.username;
+        const user_id = req.session.user._id;
+        const updated = await User.findById(user_id);
         req.session.user = updated;
+        req.session.username = updated.username;
     } catch (e) {
         next(e);
     }
@@ -223,6 +222,71 @@ const loadIncomingFriendRequests = async (req, res, next) => {
     next();
 }
 
+const becomeFriends = async (req, res, next) => {
+    // patch request
+    const id = req.body.notif_id;
+    const notif = await Notification.findById(id);
+    const to = await User.findById(notif.for_user);
+    const from = await User.findById(notif.data.from);
+
+    // update 'to' person
+    await User.findByIdAndUpdate(to._id, {
+        $push: {
+            friends: String(from._id)
+        }
+    });
+
+    // remove outgoing req from 'from'
+    await User.findByIdAndUpdate(from._id, {
+        $push: {
+            friends: String(to._id)
+        },
+        $pull: {
+            outgoingRequests: String(to._id)
+        }
+    });
+    // delete old notif
+    await Notification.findByIdAndDelete(id);
+    // make new notif for from user
+    const updateNotif = new Notification({
+        type: 'friend-accept',
+        for_user: from._id,
+        clientMessage: `${to.name} (${to.username}) has accepted your friend request!`,
+        data: {
+            acceptee: to._id
+        }
+    });
+    await updateNotif.save();
+
+    // update session user
+    const user_id = req.session.user._id;
+    const updated = await User.findById(user_id);
+    req.session.user = updated;
+    req.session.username = updated.username;
+
+    next();
+}
+
+const rejectFriendRequest = async (req, res, next) => {
+    const id = req.body.notif_id;
+    const notif = await Notification.findByIdAndDelete(id);
+    const from = notif.data.from;
+    await User.findByIdAndUpdate(from, {
+        $pull: {
+            outgoingRequests: notif.for_user
+        }
+    });
+    const user_id = req.session.user._id;
+    const updated = await User.findById(user_id);
+    req.session.user = updated;
+    req.session.username = updated.username;
+    next();
+}
+
+const cancelFriendRequest = async (req, res, next) => {
+    next();
+}
+
 export {
     isLoggedIn,
     loadFriends,
@@ -233,5 +297,8 @@ export {
     sendRequest,
     filterFriendRequests,
     userRequestsToNotifs,
-    loadIncomingFriendRequests
+    loadIncomingFriendRequests,
+    becomeFriends,
+    rejectFriendRequest,
+    cancelFriendRequest
 }

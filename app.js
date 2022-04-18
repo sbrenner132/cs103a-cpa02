@@ -82,7 +82,9 @@ import {
     sendRequest,
     filterFriendRequests,
     userRequestsToNotifs,
-    loadIncomingFriendRequests
+    loadIncomingFriendRequests,
+    becomeFriends,
+    rejectFriendRequest
 } from './routes/user.js';
 import Book from './models/Book.js';
 
@@ -153,7 +155,15 @@ app.get('/notifications', isLoggedIn, loadNotifs, filterFriendRequests, userRequ
     res.locals.requests = req.body.friendRequests;
     res.locals.outgoing = req.body.outgoing;
     res.render('notifications');
+});
+
+app.post('/acceptFriendRequest', isLoggedIn, becomeFriends, (req, res, next) => {
+    res.redirect('/notifications');
 })
+
+app.post('/rejectFriendRequest', isLoggedIn, rejectFriendRequest, (req, res, next) => {
+    res.redirect('/notifications');
+});
 
 app.use((_req, _res, next) => {
     next(createError(404));
@@ -165,7 +175,6 @@ const port = process.env.PORT || '3000';
 app.set('port', port);
 
 import http from 'http';
-import User from './models/User.js';
 const server = http.createServer(app);
 
 server.listen(port);
