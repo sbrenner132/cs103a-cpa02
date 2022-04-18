@@ -1,0 +1,26 @@
+<div class="card d-flex flex-row m-2 mb-3">
+  <div class="card-body d-flex flex-row justify-content-between">
+    <div
+      class="d-flex d-row align-items-center"
+      style="flex: 3; "
+    >
+      <i
+        class="fa-solid fa-user pe-4 fa-2x"
+        style="color: <%= request.from.color %>"
+        alt="User"
+        loading="lazy"
+      ></i>
+      <b><%= request.from.name %></b>
+    </div>
+    <div style="flex: 2" class="d-flex flex-row justify-content-around">
+      <form>
+        <input hidden name="notif_id" value="<%= request._id %>">
+        <button class="btn btn-success">Accept</button>
+      </form>
+      <form>
+        <input hidden name="notif_id" value="<%= request._id %>">
+        <button class="btn btn-danger">Reject</button>
+      </form>
+    </div>
+  </div>
+</div>

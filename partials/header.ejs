@@ -3,8 +3,15 @@
   <!-- Container wrapper -->
   <div class="container-fluid">
     <!-- Toggle button -->
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <i class="fas fa-bars"></i>
     </button>
 
@@ -40,30 +47,40 @@
 
     <!-- Right elements -->
     <div class="d-flex align-items-center">
-
       <% if (!!loggedIn) { %>
       <!-- Notifications -->
-      <div class="dropdown">
-        <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink" role="button"
-          data-mdb-toggle="dropdown" aria-expanded="false">
-          <i class="fas fa-bell"></i>
-          <span class="badge rounded-pill badge-notification bg-danger"><%= notifs.length || '' %></span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-          <li>
-            <a class="dropdown-item" href="/friends">Friend Requests</a>
-          </li>
-        </ul>
-      </div>
+      <a
+        class="text-reset me-3 dropdown-toggle hidden-arrow"
+        href="/notifications"
+      >
+        <i class="fas fa-bell"></i>
+        <span class="badge rounded-pill badge-notification bg-danger"
+          ><%= notifs.length || '' %></span
+        >
+      </a>
       <!-- Avatar -->
       <div class="dropdown">
-        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
-          role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-          <i class="fa-solid fa-user rounded-circle" style="color: <%= user.color %>;" alt="User" loading="lazy"></i>
+        <a
+          class="dropdown-toggle d-flex align-items-center hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuAvatar"
+          role="button"
+          data-mdb-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i
+            class="fa-solid fa-user rounded-circle"
+            style="color: <%= user.color %>"
+            alt="User"
+            loading="lazy"
+          ></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuAvatar"
+        >
           <li>
-            <a class="dropdown-item" href="/friends">Friends</a>
+            <a class="dropdown-item" href="#">Friends</a>
           </li>
           <li>
             <a class="dropdown-item" href="/logout">Logout</a>
@@ -72,10 +89,14 @@
       </div>
       <% } else { %>
       <div class="text-center mt-2">
-        <a href="/register" class="btn btn-primary btn-block gradient-custom-2 mb-3" type="button">Sign Up</a>
+        <a
+          href="/register"
+          class="btn btn-primary btn-block gradient-custom-2 mb-3"
+          type="button"
+          >Sign Up</a
+        >
       </div>
       <% } %>
-
     </div>
     <!-- Right elements -->
   </div>

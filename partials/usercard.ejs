@@ -1,27 +1,39 @@
-<div class="card rounded-6 shadow text-center" style="height:400px;width: 300px;">
-    <div class="hover-overlay p-3 friend-card-bg d-flex flex-row justify-content-center ripple h-100"
-        data-mdb-ripple-color="light" style="background-color: black;">
-        <div class="d-flex rounded-circle w-50 bg-light">
-            <span class="fa-stack fa-5x">
-                <i class="fa-solid fa-user fa fa-stack-1x" style="color: <%= potentialUser.color %>;" alt="User"
-                    loading="lazy"></i>
-            </span>
-        </div>
+<div
+  class="card rounded-6 shadow text-center"
+  style="height: 400px; width: 300px"
+>
+  <div
+    class="hover-overlay p-3 friend-card-bg d-flex flex-row justify-content-center ripple h-100"
+    data-mdb-ripple-color="light"
+    style="background-color: black"
+  >
+    <div class="d-flex rounded-circle w-50 bg-light">
+      <span class="fa-stack fa-5x">
+        <i
+          class="fa-solid fa-user fa fa-stack-1x"
+          style="color: <%= potentialUser.color %>"
+          alt="User"
+          loading="lazy"
+        ></i>
+      </span>
     </div>
-    <div class="card-body rounded-bottom bg-dark text-light">
-        <h5 class="card-title"><%= potentialUser.name %></h5>
-        <p><%= potentialUser.username %></p>
-        <p>Books started: <%= potentialUser.bookCount %></p>
-        <p>Friends: <%= potentialUser.numFriends %></p>
-        <% if (user.outgoingRequests.includes(String(potentialUser._id))) { %>
-        <a class="btn btn-success" href="/friends">Check Request Status</a>
-        <% } else { %>
-        <form action="/requestfriend" method="post">
-            <input hidden name="request_id" value="<%= potentialUser._id %>" />
-            <button type="submit" class="btn btn-secondary">
-                Send Friend Request
-            </button>
-        </form>
-        <% } %>
-    </div>
+  </div>
+  <div class="card-body rounded-bottom bg-dark text-light">
+    <h5 class="card-title"><%= potentialUser.name %></h5>
+    <p><%= potentialUser.username %></p>
+    <p>Books started: <%= potentialUser.bookCount %></p>
+    <p>Friends: <%= potentialUser.numFriends %></p>
+    <% if (user.outgoingRequests.includes(String(potentialUser._id))) { %>
+    <a class="btn btn-success" href="/notifications">Check Request Status</a>
+    <% } else if (incoming.includes(String(potentialUser._id))) { %>
+    <a class="btn btn-primary" href="/notifications">View Request</a>
+    <% } else { %>
+    <form action="/requestfriend" method="post">
+      <input hidden name="request_id" value="<%= potentialUser._id %>" />
+      <button type="submit" class="btn btn-secondary">
+        Send Friend Request
+      </button>
+    </form>
+    <% } %>
+  </div>
 </div>

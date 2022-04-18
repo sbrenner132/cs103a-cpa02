@@ -80,7 +80,9 @@ import {
     trimUsersToCardData,
     loadNotifs,
     sendRequest,
-    filterFriendRequests
+    filterFriendRequests,
+    userRequestsToNotifs,
+    loadIncomingFriendRequests
 } from './routes/user.js';
 import Book from './models/Book.js';
 
@@ -135,20 +137,22 @@ app.get('/findfriends', isLoggedIn, loadNotifs, (req, res, next) => {
     res.render('findfriends');
 });
 
-app.post('/findfriends', isLoggedIn, loadNotifs, lookUpUsers, trimUsersToCardData, (req, res, next) => {
+app.post('/findfriends', isLoggedIn, loadNotifs, lookUpUsers, trimUsersToCardData, loadIncomingFriendRequests, (req, res, next) => {
     res.locals.results = req.body.results;
-    res.locals.notifs = req.body.notifs
+    res.locals.notifs = req.body.notifs;
+    res.locals.incoming = req.body.incoming_requests;
     res.render('findfriends');
 });
 
 app.post('/requestfriend', isLoggedIn, sendRequest, async (req, res, next) => {
-    res.redirect('/');
+    res.redirect('/notifications');
 });
 
-app.get('/friends', isLoggedIn, loadNotifs, filterFriendRequests, (req, res, next) => {
+app.get('/notifications', isLoggedIn, loadNotifs, filterFriendRequests, userRequestsToNotifs, (req, res, next) => {
     res.locals.notifs = req.body.notifs;
     res.locals.requests = req.body.friendRequests;
-    res.render('viewfriends');
+    res.locals.outgoing = req.body.outgoing;
+    res.render('notifications');
 })
 
 app.use((_req, _res, next) => {

@@ -165,3 +165,12 @@ select.classic:focus {
 .users-scroll::-webkit-scrollbar {
   display: none;
 }
+
+.requests-scroll {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.requests-scroll::-webkit-scrollbar {
+  display: none;
+}

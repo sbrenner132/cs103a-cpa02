@@ -15,7 +15,8 @@ const notifSchema = Schema({
     sent: {
         type: Date,
         default: Date.now()
-    }
+    },
+    clientMessage: String,
 });
 
 export default mongoose.model('Notification', notifSchema);
