@@ -202,7 +202,8 @@ const userRequestsToNotifs = async (req, res, next) => {
             for: {
                 color: user.color,
                 name: user.name,
-                username: user.username
+                username: user.username,
+                id: user._id
             },
             notif_id: notif._id
         }
@@ -212,13 +213,15 @@ const userRequestsToNotifs = async (req, res, next) => {
 }
 
 const loadIncomingFriendRequests = async (req, res, next) => {
-    const type = 'friend-request';
-    const notifs = await Notification.find({
-        type,
-        for_user: req.session.user._id
-    });
-    const incoming_ids = notifs.map(notif => notif.data.from);
-    req.body.incoming_requests = incoming_ids;
+    if (req.session.user) {
+        const type = 'friend-request';
+        const notifs = await Notification.find({
+            type,
+            for_user: req.session.user._id
+        });
+        const incoming_ids = notifs.map(notif => notif.data.from);
+        req.body.incoming_requests = incoming_ids;
+    }
     next();
 }
 

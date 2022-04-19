@@ -8,7 +8,11 @@ const userSchema = Schema({
     email: String,
     friends: Array,
     color: String,
-    outgoingRequests: Array
+    outgoingRequests: Array,
+    since: {
+        type: Date,
+        default: new Date()
+    },
 });
 
 export default mongoose.model('User', userSchema);

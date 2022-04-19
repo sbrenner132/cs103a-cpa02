@@ -2,21 +2,30 @@
   class="card rounded-6 shadow text-center"
   style="height: 400px; width: 300px"
 >
-  <div
-    class="hover-overlay p-3 friend-card-bg d-flex flex-row justify-content-center ripple h-100"
-    data-mdb-ripple-color="light"
-    style="background-color: black"
-  >
-    <div class="d-flex rounded-circle w-50 bg-light">
-      <span class="fa-stack fa-5x">
-        <i
-          class="fa-solid fa-user fa fa-stack-1x"
-          style="color: <%= potentialUser.color %>"
-          alt="User"
-          loading="lazy"
-        ></i>
-      </span>
-    </div>
+  <div class="bg-image ripple" data-mdb-ripple-color="light">
+    <img
+      src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp"
+      class="img-fluid"
+    />
+    <a href="/profile/<%= potentialUser._id %>">
+      <div class="d-flex flex-column justify-content-center align-items-center mask" style="background-color: rgba(251, 251, 251, 0.15)">
+        <span
+          style="
+            height: 100px;
+            width: 100px;
+            background-color: rgb(252, 243, 221);
+            border-radius: 50%;
+            display: inline-block;
+          "
+          class="d-flex flex-column justify-content-center align-items-center"
+        ><i
+        class="fa-solid fa-user fa fa-3x"
+        style="color: <%= potentialUser.color %>"
+        alt="User"
+        loading="lazy"
+      ></i></span>
+      </div>
+    </a>
   </div>
   <div class="card-body rounded-bottom bg-dark text-light">
     <h5 class="card-title"><%= potentialUser.name %></h5>

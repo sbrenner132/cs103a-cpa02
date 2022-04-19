@@ -3,11 +3,16 @@ body {
   height: 100vh;
 }
 
+main::-webkit-scrollbar {
+  display: none;
+}
+
 main {
   padding: 10px;
   height: 100vh;
   background: rgb(183, 228, 238);
   background: linear-gradient(90deg, rgba(183, 228, 238, 1) 0%, rgba(180, 227, 204, 1) 20%, rgba(189, 233, 186, 1) 40%, rgba(189, 233, 186, 1) 60%, rgba(180, 227, 204, 1) 80%, rgba(183, 228, 238, 1) 100%);
+  overflow-y: scroll;
 }
 
 .grad-1 {

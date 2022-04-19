@@ -12,7 +12,8 @@
       ></i>
       <b><%= request.from.name %></b>
     </div>
-    <div style="flex: 2" class="d-flex flex-row justify-content-around">
+    <div style="flex: 4" class="d-flex flex-row justify-content-around">
+      <a class="btn btn-primary" href="/profile/<%= request.from.id %>">Profile</a>
       <form method="post" action="/acceptFriendRequest">
         <input hidden name="notif_id" value="<%= request._id %>">
         <button class="btn btn-success">Accept</button>

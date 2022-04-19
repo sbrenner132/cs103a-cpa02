@@ -12,11 +12,12 @@
         ></i>
         <b><%= outgoing.for.name %></b>
       </div>
-      <div style="flex: 2" class="d-flex flex-row-reverse">
+      <div style="flex: 2;" class="d-flex flex-row-reverse justify-content-around">
         <form method="post" action="/rejectFriendRequest">
           <input hidden name="notif_id" value="<%= outgoing.notif_id %>">
           <button class="btn btn-warning">Cancel</button>
         </form>
+        <a class="btn btn-primary" href="/profile/<%= outgoing.for.id %>">Profile</a>
       </div>
     </div>
   </div>

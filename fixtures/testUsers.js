@@ -10,34 +10,40 @@ mongoose.connect(mongo_URI, {
     useUnifiedTopology: true,
 });
 db.on('error', console.error.bind(console, 'mongoose connection error'));
-db.on('open', console.log.bind(console, 'connected to mongoose without problems'));
+db.on('open', () => loadTestUsers());
 
 import faker from 'faker';
 import randomColor from 'randomcolor';
 import User from '../models/User.js';
 
-const testNum = 20;
+const loadTestUsers = () => {
+    const testNum = 20;
 
-const save = async (user) => await user.save();
+    const users = [];
 
-for (let i = 0; i < testNum; i++) {
-    const person = faker.name;
+    for (let i = 0; i < testNum; i++) {
+        const person = faker.name;
 
-    const name = [person.firstName(), person.lastName()].join(' ');
-    const email = faker.internet.email(name);
-    const username = faker.internet.userName(name);
-    const passphrase = faker.internet.password();
-    const color = randomColor();
+        const name = [person.firstName(), person.lastName()].join(' ');
+        const email = faker.internet.email(name);
+        const username = faker.internet.userName(name);
+        const passphrase = faker.internet.password();
+        const color = randomColor();
 
-    const user = new User({
-        username,
-        name,
-        email,
-        passphrase,
-        color
-    });
+        const user = new User({
+            username,
+            name,
+            email,
+            passphrase,
+            color
+        });
 
-    save(user);
+        users.push(user);
+    }
+
+    Promise.all(users.map(async (user) => {
+        await user.save();
+    })).then(() => {
+        process.exit(1);
+    }).catch(e => console.log(e));
 }
-
-process.exit(1);

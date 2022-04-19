@@ -69,7 +69,7 @@
           aria-expanded="false"
         >
           <i
-            class="fa-solid fa-user rounded-circle"
+            class="fa-solid fa-user"
             style="color: <%= user.color %>"
             alt="User"
             loading="lazy"
@@ -79,6 +79,11 @@
           class="dropdown-menu dropdown-menu-end"
           aria-labelledby="navbarDropdownMenuAvatar"
         >
+          <li>
+            <a class="dropdown-item" href="/profile/<%= user._id %>"
+              >My Profile</a
+            >
+          </li>
           <li>
             <a class="dropdown-item" href="#">Friends</a>
           </li>

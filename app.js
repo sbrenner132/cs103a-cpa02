@@ -165,6 +165,15 @@ app.post('/rejectFriendRequest', isLoggedIn, rejectFriendRequest, (req, res, nex
     res.redirect('/notifications');
 });
 
+app.get('/profile/:id', loadNotifs, loadIncomingFriendRequests, async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    console.log(user);
+    res.locals.notifs = req.body.notifs;
+    res.locals.userProfile = user;
+    res.locals.incoming = req.body.incoming_requests || [];
+    res.render('profile');
+});
+
 app.use((_req, _res, next) => {
     next(createError(404));
 });
@@ -175,6 +184,7 @@ const port = process.env.PORT || '3000';
 app.set('port', port);
 
 import http from 'http';
+import User from './models/User.js';
 const server = http.createServer(app);
 
 server.listen(port);
