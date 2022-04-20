@@ -37,7 +37,7 @@
             </button>
             <% } else if (incoming.includes(String(userProfile._id))) { %>
             <a class="btn btn-primary" href="/notifications">View Request</a>
-            <% } else if (user.friends.includes(String(userProfile._id))) { %>
+            <% } else if (user && user.friends.includes(String(userProfile._id))) { %>
               <button disabled class="btn btn-warning" href="/notifications">You're already friends!</button>
             <% } else { %>
             <form action="/requestfriend" method="post">
