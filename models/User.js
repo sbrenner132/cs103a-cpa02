@@ -13,6 +13,9 @@ const userSchema = Schema({
         type: Date,
         default: new Date()
     },
+    twitter: String,
+    insta: String,
+    facebook: String
 });
 
 export default mongoose.model('User', userSchema);

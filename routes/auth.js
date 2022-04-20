@@ -49,7 +49,10 @@ router.post('/signup', (req, res, next) => {
             password,
             repeat,
             email,
-            name
+            name,
+            twitter,
+            insta,
+            fb
         } = req.body;
         if (password !== repeat) {
             res.redirect('/register');
@@ -64,6 +67,9 @@ router.post('/signup', (req, res, next) => {
                 email,
                 name,
                 color: randomcolor(),
+                twitter,
+                insta,
+                facebook: fb,
             });
 
             user.save().then(() => {
