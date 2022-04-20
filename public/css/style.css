@@ -82,27 +82,6 @@ main {
   color: #000;
 }
 
-select {
-
-  /* styling */
-  background-color: white;
-  border: thin solid blue;
-  border-radius: 4px;
-  display: inline-block;
-  font: inherit;
-  line-height: 1.5em;
-  padding: 0.5em 3.5em 0.5em 1em;
-
-  /* reset */
-
-  margin: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
 /* arrows */
 
 select.classic {
@@ -178,35 +157,4 @@ select.classic:focus {
 
 .requests-scroll::-webkit-scrollbar {
   display: none;
-}
-
-@media (min-width: 1025px) {
-  .h-custom {
-    height: 100vh !important;
-  }
-}
-.card-registration .select-input.form-control[readonly]:not([disabled]) {
-  font-size: 1rem;
-  line-height: 2.15;
-  padding-left: .75em;
-  padding-right: .75em;
-}
-.card-registration .select-arrow {
-  top: 13px;
-}
-
-.bg-indigo {
-  background-color: #4835d4;
-}
-@media (min-width: 992px) {
-  .card-registration-2 .bg-indigo {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-  }
-}
-@media (max-width: 991px) {
-  .card-registration-2 .bg-indigo {
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-  }
 }

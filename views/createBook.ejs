@@ -1,117 +1,192 @@
-<div class="pt-5 pb-3 justify-content-between d-flex flex-column align-items-center w-100 h-50">
-    <h1 class="display-4 pb-5">Let's Start a Collaborative Story!</h1>
-    <form class="d-flex flex-row justify-content-around align-items-center w-75" method="post" action="/create">
-        <div class="d-flex flex-column">
-            <div class="card rounded-3 shadow p-3" style="width: 70%;">
-                <div class="card-header">
-                    <h4 class="card-title">Starting with the Basics</h4>
-                </div>
-                <div class="card-body">
-                    <p>1. Let's give your story a name!</p>
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <div class="form-outline flex-fill mb-0">
-                            <input required type="text" id="title" class="form-control" name="title" />
-                            <label class="form-label" for="title">Title</label>
-                        </div>
-                    </div>
-                    <p>2. And what should is be about? This doesn't have to stay the theme forever, it just gives
-                        collaborators an initial direction!</p>
-                    <div class="form-outline w-100 mb-4">
-                        <textarea required class="form-control" id="theme" rows="4" name="theme"></textarea>
-                        <label class="form-label" for="theme">Theme</label>
-                    </div>
-                    <p>3. Give it a starting word!</p>
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <div class="form-outline flex-fill mb-0">
-                            <input required type="text" id="start" class="form-control" name="start" />
-                            <label class="form-label" for="start">Starting Word</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div
+  class="pt-5 pb-3 justify-content-between d-flex flex-column align-items-center w-100 h-50"
+>
+  <h1 class="display-4 pb-5">Let's Start a Collaborative Story!</h1>
+  <form
+    id="bookForm"
+    class="d-flex flex-row justify-content-around align-items-center w-75"
+    method="post"
+    action="/create"
+  >
+    <div class="d-flex flex-column">
+      <div class="card rounded-3 shadow p-3" style="width: 70%">
+        <div class="card-header">
+          <h4 class="card-title">Starting with the Basics</h4>
         </div>
-        <div class="d-flex flex-column" style="width: 50%;">
-            <div class="card rounded shadow p-3">
-                <div class="card-header">
-                    <h4 class="card-title">Setting some parameters</h4>
-                </div>
-                <div class="card-body">
-                    <p>4. Add some tags for your story, so that people can find it easier!</p>
-                    <input class="form-control" id="tag" placeholder="Add a tag" />
-                    <div class="pt-3" id="tags"></div>
-                    <input hidden name="tagSet" id="tagset" />
-                    <p>5. Who should see this? If <b>public</b>, everyone will be able to find and add to your story!
-                        Otherwise, you'll be able to select some of your friends to be collaborators!</p>
-                    <div class="form-check pb-3">
-                        <input checked class="form-check-input" type="checkbox" value="" id="public" name="public" />
-                        <label class="form-check-label" for="public">Public</label>
-                    </div>
-                    <select id="friends" class="classic">
-                        <option selected disabled hidden>Select Friends</option>
-                        <% friends.forEach(friend => { %>
-                        <option value="<%= friend %>"><%= friend %></option>
-                        <% }) %>
-                    </select>
-                </div>
-                <div class="card-footer d-flex flex-row-reverse">
-                    <button type="submit" class="btn btn-lg rounded-8 gradient-custom-2"><span
-                            class="text-white">Go!</span></button>
-                </div>
+        <div class="card-body">
+          <p>1. Let's give your story a name!</p>
+          <div class="d-flex flex-row align-items-center mb-4">
+            <div class="form-outline flex-fill mb-0">
+              <input
+                required
+                type="text"
+                id="title"
+                class="form-control"
+                name="title"
+              />
+              <label class="form-label" for="title">Title</label>
             </div>
+          </div>
+          <p>
+            2. And what should is be about? This doesn't have to stay the theme
+            forever, it just gives collaborators an initial direction!
+          </p>
+          <div class="form-outline w-100 mb-4">
+            <textarea
+              required
+              class="form-control"
+              id="theme"
+              rows="4"
+              name="theme"
+            ></textarea>
+            <label class="form-label" for="theme">Theme</label>
+          </div>
+          <p>3. Give it a starting word!</p>
+          <div class="d-flex flex-row align-items-center mb-4">
+            <div class="form-outline flex-fill mb-0">
+              <input
+                required
+                type="text"
+                id="start"
+                class="form-control"
+                name="start"
+              />
+              <label class="form-label" for="start">Starting Word</label>
+            </div>
+          </div>
         </div>
-    </form>
+      </div>
+    </div>
+    <div class="d-flex flex-column" style="width: 50%">
+      <div class="card rounded shadow p-3">
+        <div class="card-header">
+          <h4 class="card-title">Setting some parameters</h4>
+        </div>
+        <div class="card-body">
+          <p>
+            4. Add some tags for your story, so that people can find it easier!
+          </p>
+          <input class="form-control" id="tag" placeholder="Add a tag" />
+          <div class="pt-3" id="tags"></div>
+          <input hidden name="tagSet" id="tagset" />
+          <p>
+            5. Who should see this? If <b>public</b>, everyone will be able to
+            find and add to your story! Otherwise, you'll be able to select some
+            of your friends to be collaborators!
+          </p>
+          <div class="form-check pb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="pub"
+              name="pub"
+            />
+            <label class="form-check-label" for="pub">Public</label>
+          </div>
+          <select id="friendselect" class="">
+            <option selected disabled hidden>Select Friends</option>
+            <% friends.forEach(friend => { %>
+            <option value="<%= friend %>"><%= friend %></option>
+            <% }) %>
+          </select>
+          <div class="pt-3" id="friends"></div>
+          <input hidden name="collaborators" id="collaborators" />
+        </div>
+        <div class="card-footer d-flex flex-row-reverse">
+          <button type="submit" class="btn btn-lg rounded-8 gradient-custom-2">
+            <span class="text-white">Go!</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 <script>
-    const tagSet = new Set();
-    const tagnode = document.getElementById('tag');
-    tagnode.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {
-            const tag = tagnode.value;
-            if (tagSet.has(tag)) {
-                tagnode.value = '';
-                return;
-            }
-            const html =
-                `<div class="chip"><span>${tag}</span><span class="closebtn" onclick="handleDelete(this)">&times;</span></div>`;
-            const tags = document.getElementById('tags');
-            tags.innerHTML = html + tags.innerHTML;
-            tagnode.value = '';
-            tagSet.add(tag);
-            document.getElementById('tagset').value = [...tagSet].join('#');
-        }
-    });
-
-    const wordnode = document.getElementById('start');
-    wordnode.addEventListener('keyup', (e) => {
-        const text = wordnode.value.slice(0, -1);
-        if (e.key === ' ') {
-            wordnode.value = text;
-        }
-    })
-
-    const handleDelete = (e) => {
-        e.parentElement.style.display = 'none';
-        const tag = e.parentElement.children[0].innerHTML;
-        tagSet.delete(tag);
-        document.getElementById('tagset').value = [...tagSet].join('#');
+  const tagSet = new Set();
+  const tagnode = document.getElementById("tag");
+  tagnode.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+      const tag = tagnode.value;
+      if (tagSet.has(tag)) {
+        tagnode.value = "";
+        return;
+      }
+      const html = `<div class="chip"><span>${tag}</span><span class="closebtn" onclick="handleDelete(this)">&times;</span></div>`;
+      const tags = document.getElementById("tags");
+      tags.innerHTML = html + tags.innerHTML;
+      tagnode.value = "";
+      tagSet.add(tag);
+      document.getElementById("tagset").value = [...tagSet].join("#");
     }
+  });
 
-    const checkbox = document.querySelector("#public");
-    checkbox.addEventListener('change', () => {
-        const friends = document.getElementById('friends');
-        const disabled = !!friends.getAttribute('disabled');
-        if (disabled) {
-            friends.removeAttribute('disabled');
-        } else {
-            friends.setAttribute('disabled', 'true');
+  const wordnode = document.getElementById("start");
+  wordnode.addEventListener("keyup", (e) => {
+    const text = wordnode.value.slice(0, -1);
+    if (e.key === " ") {
+      wordnode.value = text;
+    }
+  });
+
+  const handleDelete = (e) => {
+    e.parentElement.style.display = "none";
+    const tag = e.parentElement.children[0].innerHTML;
+    tagSet.delete(tag);
+    document.getElementById("tagset").value = [...tagSet].join("#");
+  };
+
+  const checkbox = document.querySelector("#pub");
+  checkbox.addEventListener("change", () => {
+    const friends = document.getElementById("friendselect");
+    const disabled = !!friends.getAttribute("disabled");
+    if (disabled) {
+      friends.removeAttribute("disabled");
+    } else {
+      friends.setAttribute("disabled", "true");
+      friendSet.clear()
+      document.getElementById("collaborators").value = '';
+      document.getElementById("friends").innerHTML = '';
+    }
+  });
+  window.addEventListener(
+    "keydown",
+    function (e) {
+      if (
+        e.keyIdentifier == "U+000A" ||
+        e.keyIdentifier == "Enter" ||
+        e.keyCode == 13
+      ) {
+        if (e.target.nodeName == "INPUT" && e.target.type == "text") {
+          e.preventDefault();
+          return false;
         }
-    });
-    window.addEventListener('keydown', function (e) {
-        if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
-            if (e.target.nodeName == 'INPUT' && e.target.type == 'text') {
-                e.preventDefault();
-                return false;
-            }
-        }
-    }, true);
+      }
+    },
+    true
+  );
+
+  // friends adding
+  const friendSet = new Set();
+  const friendNode = document.getElementById("friendselect");
+  friendNode.addEventListener("change", (e) => {
+    const friend = e.target.value;
+    if (friendSet.has(friend)) {
+      friendNode.value = "";
+      return;
+    }
+    const html = `<div class="chip"><span>${friend}</span><span class="closebtn" onclick="deleteFromCollabs(this)">&times;</span></div>`;
+    const friends = document.getElementById("friends");
+    friends.innerHTML = html + friends.innerHTML;
+    friend.value = "";
+    friendSet.add(friend);
+    document.getElementById("collaborators").value = [...friendSet].join("#");
+  });
+
+  const deleteFromCollabs = (e) => {
+    e.parentElement.style.display = "none";
+    const friend = e.parentElement.children[0].innerHTML;
+    friendSet.delete(friend);
+    document.getElementById("collaborators").value = [...friendSet].join("#");
+  };
 </script>

@@ -104,7 +104,7 @@ app.get('/create', isLoggedIn, loadNotifs, loadFriends, bookCount, (req, res, _n
     res.render('createBook');
 });
 
-app.post('/create', isLoggedIn, loadNotifs, (req, res, next) => {
+app.post('/create', isLoggedIn, loadNotifs, async (req, res, next) => {
     const {
         title,
         theme,
@@ -114,9 +114,15 @@ app.post('/create', isLoggedIn, loadNotifs, (req, res, next) => {
     const tags = req.body.tagSet.split('#');
     const author_id = req.session.user._id;
     const created = new Date();
-    if (!!pub) {
-        // collaborator logic here, needs friends to work first
+    let collabs = undefined;
+    if (typeof(pub) === 'undefined') {
+        collabs = req.body.collaborators.split('#')
     }
+
+    const collaborators = collabs ? await Promise.all(collabs.map(async (collab) => {
+        const user = await User.findOne({name: collab});
+        return String(user._id);
+    })) : [];
 
     const book = new Book({
         title,
@@ -125,7 +131,8 @@ app.post('/create', isLoggedIn, loadNotifs, (req, res, next) => {
         created,
         tags,
         text: start,
-        public: Boolean(pub)
+        public: typeof(pub) === 'undefined' ? false : true,
+        collaborators
     });
 
     book.save().then(() => {
@@ -167,7 +174,6 @@ app.post('/rejectFriendRequest', isLoggedIn, rejectFriendRequest, (req, res, nex
 
 app.get('/profile/:id', loadNotifs, loadIncomingFriendRequests, async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    console.log(user);
     res.locals.notifs = req.body.notifs;
     res.locals.userProfile = user;
     res.locals.incoming = req.body.incoming_requests || [];
