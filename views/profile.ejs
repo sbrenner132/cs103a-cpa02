@@ -37,6 +37,8 @@
             </button>
             <% } else if (incoming.includes(String(userProfile._id))) { %>
             <a class="btn btn-primary" href="/notifications">View Request</a>
+            <% } else if (user.friends.includes(String(userProfile._id))) { %>
+              <button disabled class="btn btn-warning" href="/notifications">You're already friends!</button>
             <% } else { %>
             <form action="/requestfriend" method="post">
               <input hidden name="request_id" value="<%= userProfile._id %>" />
@@ -75,7 +77,8 @@
               class="list-group-item d-flex justify-content-between align-items-center p-3"
             >
               <i class="fab fa-facebook-f fa-lg" style="color: #3b5998"></i>
-              <% if (userProfile.facebook && userProfile.facebook.length > 0) { %>
+              <% if (userProfile.facebook && userProfile.facebook.length > 0) {
+              %>
               <p class="mb-0"><%= userProfile.facebook %></p>
               <% } else { %>
               <p class="mb-0 text-muted">None provided</p>
@@ -111,64 +114,23 @@
         <div class="col-md-6">
           <div class="card mb-4 mb-md-0">
             <div class="card-body">
-              <p class="mb-4">Content Style</p>
-              <p class="mb-1" style="font-size: 0.77rem">Web Design</p>
+              <p class="">Content Style</p>
+              <% if (Object.keys(frequencies).length) { %> <% for (const key in
+              frequencies) { %>
+              <p class="mb-1 mt-4" style="font-size: 0.77rem"><%= key %></p>
               <div class="progress rounded" style="height: 5px">
                 <div
                   class="progress-bar"
                   role="progressbar"
-                  style="width: 80%"
-                  aria-valuenow="80"
+                  style="width: <%= frequencies[key] * 100 %>%"
+                  aria-valuenow="<%= frequencies[key] * 100 %>"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
               </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">Website Markup</p>
-              <div class="progress rounded" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 72%"
-                  aria-valuenow="72"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">One Page</p>
-              <div class="progress rounded" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 89%"
-                  aria-valuenow="89"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">
-                Mobile Template
-              </p>
-              <div class="progress rounded" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 55%"
-                  aria-valuenow="55"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">Backend API</p>
-              <div class="progress rounded mb-2" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 66%"
-                  aria-valuenow="66"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+              <% } %> <% } else { %>
+              <p class="text-muted">This user has no books yet!</p>
+              <% } %>
             </div>
           </div>
         </div>
@@ -176,65 +138,24 @@
           <div class="card mb-4 mb-md-0">
             <div class="card-body">
               <div class="col">
-                <p class="mb-4">Most Popular Books</p>
+                <p class="">Most Popular Public Books</p>
               </div>
-              <p class="mb-1" style="font-size: 0.77rem">Web Design</p>
+              <% if (Object.keys(bookPopularity).length) { %> <% for (const key in
+              bookPopularity) { %>
+              <p class="mb-1 mt-4" style="font-size: 0.77rem"><%= key %></p>
               <div class="progress rounded" style="height: 5px">
                 <div
                   class="progress-bar"
                   role="progressbar"
-                  style="width: 80%"
-                  aria-valuenow="80"
+                  style="width: <%= bookPopularity[key] * 100 %>%"
+                  aria-valuenow="<%= bookPopularity[key] * 100 %>"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
               </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">Website Markup</p>
-              <div class="progress rounded" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 72%"
-                  aria-valuenow="72"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">One Page</p>
-              <div class="progress rounded" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 89%"
-                  aria-valuenow="89"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">
-                Mobile Template
-              </p>
-              <div class="progress rounded" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 55%"
-                  aria-valuenow="55"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <p class="mt-4 mb-1" style="font-size: 0.77rem">Backend API</p>
-              <div class="progress rounded mb-2" style="height: 5px">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  style="width: 66%"
-                  aria-valuenow="66"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
+              <% } %> <% } else { %>
+              <p class="text-muted">This user has no books yet!</p>
+              <% } %>
             </div>
           </div>
         </div>

@@ -84,8 +84,10 @@ import {
     userRequestsToNotifs,
     loadIncomingFriendRequests,
     becomeFriends,
-    rejectFriendRequest
+    rejectFriendRequest,
+    loadUser
 } from './routes/user.js';
+import { loadUserTagFrequency, loadUserBookPopularity } from './routes/book.js';
 import Book from './models/Book.js';
 
 app.get('/', loadNotifs, (req, res, next) => {
@@ -115,12 +117,12 @@ app.post('/create', isLoggedIn, loadNotifs, async (req, res, next) => {
     const author_id = req.session.user._id;
     const created = new Date();
     let collabs = undefined;
-    if (typeof(pub) === 'undefined') {
+    if (typeof (pub) === 'undefined') {
         collabs = req.body.collaborators.split('#')
     }
 
     const collaborators = collabs ? await Promise.all(collabs.map(async (collab) => {
-        const user = await User.findOne({name: collab});
+        const user = await User.findOne({ name: collab });
         return String(user._id);
     })) : [];
 
@@ -131,7 +133,7 @@ app.post('/create', isLoggedIn, loadNotifs, async (req, res, next) => {
         created,
         tags,
         text: start,
-        public: typeof(pub) === 'undefined' ? false : true,
+        public: typeof (pub) === 'undefined' ? false : true,
         collaborators
     });
 
@@ -172,11 +174,12 @@ app.post('/rejectFriendRequest', isLoggedIn, rejectFriendRequest, (req, res, nex
     res.redirect('/notifications');
 });
 
-app.get('/profile/:id', loadNotifs, loadIncomingFriendRequests, async (req, res, next) => {
-    const user = await User.findById(req.params.id);
+app.get('/profile/:id', loadNotifs, loadIncomingFriendRequests, loadUser, loadUserTagFrequency, loadUserBookPopularity, async (req, res, next) => {
     res.locals.notifs = req.body.notifs;
-    res.locals.userProfile = user;
+    res.locals.userProfile = req.body.user;
     res.locals.incoming = req.body.incoming_requests || [];
+    res.locals.frequencies = req.body.frequencies;
+    res.locals.bookPopularity = req.body.bookPopularity;
     res.render('profile');
 });
 

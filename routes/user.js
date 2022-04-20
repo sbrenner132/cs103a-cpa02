@@ -286,6 +286,12 @@ const rejectFriendRequest = async (req, res, next) => {
     next();
 }
 
+const loadUser = async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    req.body.user = user;
+    next();
+}
+
 const cancelFriendRequest = async (req, res, next) => {
     next();
 }
@@ -303,5 +309,6 @@ export {
     loadIncomingFriendRequests,
     becomeFriends,
     rejectFriendRequest,
-    cancelFriendRequest
+    cancelFriendRequest,
+    loadUser,
 }
