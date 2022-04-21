@@ -23,7 +23,7 @@ const loadUserTagFrequency = async (req, res, next) => {
     const options = { ignoreCase: true, depth: 1 };
     const frequencies = sortJson(tags, options);
 
-    req.body.frequencies = frequencies;
+    req.body.frequencies = limit(frequencies);
     next();
 }
 
@@ -44,8 +44,24 @@ const loadUserBookPopularity = async (req, res, next) => {
     const options = { ignoreCase: true, depth: 1 };
     const bookPopularity = sortJson(bookSet, options);
 
-    req.body.bookPopularity = bookPopularity;
+    req.body.bookPopularity = limit(bookPopularity);
     next();
+}
+
+const limit = (json) => {
+    const lim = 5;
+    let count = 0;
+    const out = {};
+    for (let key in json) {
+        if (count === lim) {
+            break;
+        } else {
+            out[key] = json[key];
+            count++;
+        }
+    }
+    return out;
+
 }
 
 export {

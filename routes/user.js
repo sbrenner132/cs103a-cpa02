@@ -296,6 +296,21 @@ const cancelFriendRequest = async (req, res, next) => {
     next();
 }
 
+const loadAllFriendInfo = async (req, res, next) => {
+    const friend_ids = req.session.user.friends;
+    const friends = await Promise.all(friend_ids.map(async (id) => {
+        const friend = await User.findById(id);
+        return {
+            name: friend.name,
+            id: String(friend._id),
+            username: friend.username,
+            color: friend.color
+        };
+    }));
+    req.body.friends = friends;
+    next(); 
+}
+
 export {
     isLoggedIn,
     loadFriends,
@@ -311,4 +326,5 @@ export {
     rejectFriendRequest,
     cancelFriendRequest,
     loadUser,
+    loadAllFriendInfo,
 }

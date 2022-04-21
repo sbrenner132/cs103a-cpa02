@@ -37,8 +37,11 @@
             </button>
             <% } else if (incoming.includes(String(userProfile._id))) { %>
             <a class="btn btn-primary" href="/notifications">View Request</a>
-            <% } else if (user && user.friends.includes(String(userProfile._id))) { %>
-              <button disabled class="btn btn-warning" href="/notifications">You're already friends!</button>
+            <% } else if (user &&
+            user.friends.includes(String(userProfile._id))) { %>
+            <button disabled class="btn btn-warning" href="/notifications">
+              You're already friends!
+            </button>
             <% } else { %>
             <form action="/requestfriend" method="post">
               <input hidden name="request_id" value="<%= userProfile._id %>" />
@@ -114,7 +117,12 @@
         <div class="col-md-6">
           <div class="card mb-4 mb-md-0">
             <div class="card-body">
-              <p class="">Content Style</p>
+              <div class="col">
+                <div class="">Content Style</div>
+                <div class="text-muted" style="font-size: 12px">
+                  Ranked by number of books with these thematic tags
+                </div>
+              </div>
               <% if (Object.keys(frequencies).length) { %> <% for (const key in
               frequencies) { %>
               <p class="mb-1 mt-4" style="font-size: 0.77rem"><%= key %></p>
@@ -138,10 +146,13 @@
           <div class="card mb-4 mb-md-0">
             <div class="card-body">
               <div class="col">
-                <p class="">Most Popular Public Books</p>
+                <div class="">Most Popular Public Books</div>
+                <div class="text-muted" style="font-size: 12px">
+                  Ranked by number of contributors
+                </div>
               </div>
-              <% if (Object.keys(bookPopularity).length) { %> <% for (const key in
-              bookPopularity) { %>
+              <% if (Object.keys(bookPopularity).length) { %> <% for (const key
+              in bookPopularity) { %>
               <p class="mb-1 mt-4" style="font-size: 0.77rem"><%= key %></p>
               <div class="progress rounded" style="height: 5px">
                 <div

@@ -1,0 +1,19 @@
+<div class="p-3 d-flex flex-column align-items-center">
+  <h1 class="display-3 pb-5">Your Friends</h1>
+  <% if (!friends.length) { %>
+  <p class="pt-2 text-center" style="width: 30%">
+    Sorry, it looks like you don't have any friends yet! Feel free to either
+    spread the word about our site to your IRL friends, or
+    <a href="/findfriends">look for friends</a> on our site specifically.
+  </p>
+  <% } else { %>
+  <div
+    class="d-flex flex-row justify-content-center w-100"
+  >
+    <% friends.forEach(friend => { %>
+        <%- include('../partials/friendcard', {friend}) %>
+        <% }) %>
+  </div>
+
+  <% } %>
+</div>

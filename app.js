@@ -85,7 +85,8 @@ import {
     loadIncomingFriendRequests,
     becomeFriends,
     rejectFriendRequest,
-    loadUser
+    loadUser,
+    loadAllFriendInfo,
 } from './routes/user.js';
 import { loadUserTagFrequency, loadUserBookPopularity } from './routes/book.js';
 import Book from './models/Book.js';
@@ -181,6 +182,12 @@ app.get('/profile/:id', loadNotifs, loadIncomingFriendRequests, loadUser, loadUs
     res.locals.frequencies = req.body.frequencies;
     res.locals.bookPopularity = req.body.bookPopularity;
     res.render('profile');
+});
+
+app.get('/friends', isLoggedIn, loadNotifs, loadAllFriendInfo, async (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
+    res.locals.friends = req.body.friends;
+    res.render('friends');
 });
 
 app.use((_req, _res, next) => {
