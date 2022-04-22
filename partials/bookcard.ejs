@@ -1,0 +1,35 @@
+<a href="/book/<%= book.id %>">
+  <div class="d-flex flex-row justify-content-center">
+    <div class="book">
+      <div
+        class="back"
+        style="
+          background: linear-gradient(
+            45deg,
+            #dad5dc 0%,
+            <%= book.color %> 100%
+          );
+        "
+      ></div>
+      <div class="page6"></div>
+      <div class="page5"></div>
+      <div class="page4"></div>
+      <div class="page3"></div>
+      <div class="page2"></div>
+      <div class="page1"></div>
+      <div
+        class="ps-2 pb-2 front d-flex flex-column justify-content-end align-items-start"
+        style="
+          background: linear-gradient(
+            45deg,
+            #dad5dc 0%,
+            <%= book.color %> 100%
+          );
+        "
+      >
+      <div class="text-dark"><b><%= book.title %></b></div>
+      <div class="text-dark"><%= author %></div>
+    </div>
+    </div>
+  </div>
+</a>

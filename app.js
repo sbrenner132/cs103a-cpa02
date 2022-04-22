@@ -88,7 +88,7 @@ import {
     loadUser,
     loadAllFriendInfo,
 } from './routes/user.js';
-import { loadUserTagFrequency, loadUserBookPopularity } from './routes/book.js';
+import { loadUserTagFrequency, loadUserBookPopularity, createBook, loadMyBooks } from './routes/book.js';
 import Book from './models/Book.js';
 
 app.get('/', loadNotifs, (req, res, next) => {
@@ -107,40 +107,8 @@ app.get('/create', isLoggedIn, loadNotifs, loadFriends, bookCount, (req, res, _n
     res.render('createBook');
 });
 
-app.post('/create', isLoggedIn, loadNotifs, async (req, res, next) => {
-    const {
-        title,
-        theme,
-        pub,
-        start
-    } = req.body;
-    const tags = req.body.tagSet.split('#');
-    const author_id = req.session.user._id;
-    const created = new Date();
-    let collabs = undefined;
-    if (typeof (pub) === 'undefined') {
-        collabs = req.body.collaborators.split('#')
-    }
-
-    const collaborators = collabs ? await Promise.all(collabs.map(async (collab) => {
-        const user = await User.findOne({ name: collab });
-        return String(user._id);
-    })) : [];
-
-    const book = new Book({
-        title,
-        theme,
-        author_id,
-        created,
-        tags,
-        text: start,
-        public: typeof (pub) === 'undefined' ? false : true,
-        collaborators
-    });
-
-    book.save().then(() => {
-        res.redirect('/');
-    }).catch(e => res.redirect('/'));
+app.post('/create', isLoggedIn, loadNotifs, createBook, async (req, res, next) => {
+    res.redirect('/');
 });
 
 app.get('/findfriends', isLoggedIn, loadNotifs, (req, res, next) => {
@@ -190,6 +158,16 @@ app.get('/friends', isLoggedIn, loadNotifs, loadAllFriendInfo, async (req, res, 
     res.render('friends');
 });
 
+app.get('/library', isLoggedIn, loadNotifs, loadMyBooks, (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
+    res.locals.books = req.body.books;
+    res.render('library');
+});
+
+app.get('/book/:id', (req, res, next) => {
+    res.redirect('/')
+})
+
 app.use((_req, _res, next) => {
     next(createError(404));
 });
@@ -200,7 +178,6 @@ const port = process.env.PORT || '3000';
 app.set('port', port);
 
 import http from 'http';
-import User from './models/User.js';
 const server = http.createServer(app);
 
 server.listen(port);

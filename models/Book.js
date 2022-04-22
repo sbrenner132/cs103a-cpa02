@@ -10,6 +10,8 @@ const bookSchema = Schema({
     public: Boolean,
     tags: Array,
     collaborators: Array,
+    theme: String,
+    color: String,
 });
 
 export default mongoose.model('Book', bookSchema)

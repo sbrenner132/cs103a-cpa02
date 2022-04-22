@@ -8,7 +8,7 @@
   </p>
   <% } else { %>
   <div
-    class="d-flex flex-row justify-content-center w-100"
+    class="d-flex flex-wrap flex-row justify-content-center w-100"
   >
     <% friends.forEach(friend => { %>
         <%- include('../partials/friendcard', {friend}) %>

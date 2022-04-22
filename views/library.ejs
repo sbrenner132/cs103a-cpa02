@@ -1,0 +1,17 @@
+<div class="text-center pb-5 d-flex flex-column p-3">
+  <h1 class="display-2 pb-5">My Library</h1>
+  <% if (!books.length) { %>
+  <p>
+    Sorry, it looks like you don't have any books created yet! Feel free to
+    <a href="/create">create one</a> to see some content here.
+  </p>
+  <% } else { %>
+  <div class="d-flex flex-wrap flex-row justify-content-evenly w-100">
+    <% books.forEach(book => { %>
+        <div>
+            <%- include('../partials/bookcard.ejs', {book, author: user.name}) %>
+        </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
