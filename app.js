@@ -88,7 +88,7 @@ import {
     loadUser,
     loadAllFriendInfo,
 } from './routes/user.js';
-import { loadUserTagFrequency, loadUserBookPopularity, createBook, loadMyBooks } from './routes/book.js';
+import { loadUserTagFrequency, loadUserBookPopularity, createBook, loadMyBooks, checkBookAccess, loadBook } from './routes/book.js';
 import Book from './models/Book.js';
 
 app.get('/', loadNotifs, (req, res, next) => {
@@ -164,8 +164,10 @@ app.get('/library', isLoggedIn, loadNotifs, loadMyBooks, (req, res, next) => {
     res.render('library');
 });
 
-app.get('/book/:id', (req, res, next) => {
-    res.redirect('/')
+app.get('/book/:id', isLoggedIn, loadNotifs, checkBookAccess, loadBook, (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
+    res.locals.book = req.body.book;
+    res.render('book')
 })
 
 app.use((_req, _res, next) => {

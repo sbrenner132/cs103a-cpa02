@@ -79,8 +79,7 @@ const createBook = async (req, res, next) => {
     if (typeof (pub) === 'undefined') {
         collabs = req.body.collaborators.split('#')
     }
-
-    const collaborators = collabs ? await Promise.all(collabs.map(async (collab) => {
+    const collaborators = collabs && ![''].every((val, index) => val === collabs[index]) ? await Promise.all(collabs.map(async (collab) => {
         const user = await User.findOne({ name: collab });
         return String(user._id);
     })) : [];
@@ -104,7 +103,7 @@ const createBook = async (req, res, next) => {
 
 const loadMyBooks = async (req, res, next) => {
     const author_id = req.session.user._id;
-    const allBooksData = await Book.find({author_id});
+    const allBooksData = await Book.find({ author_id });
     const books = allBooksData.map(book => ({
         title: book.title,
         theme: book.theme,
@@ -115,9 +114,43 @@ const loadMyBooks = async (req, res, next) => {
     next();
 }
 
+const checkBookAccess = async (req, res, next) => {
+    const id = req.params.id;
+    const book = await Book.findById(id);
+    const curr_user = String(req.session.user._id);
+    console.log('curr', curr_user);
+    console.log('book author', book.author_id)
+    if (book.author_id === curr_user) {
+        next();
+    } else if (!book.public) {
+        console.log('collabls', book.collaborators)
+        console.log('includes', book.collaborators.includes(curr_user))
+        if (!book.collaborators.includes(curr_user)) {
+            res.redirect('/');
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+}
+
+const loadBook = async (req, res, next) => {
+    const id = req.params.id;
+    const book = await Book.findById(id);
+    const { title, theme, text, created, author_id, color, tags } = book;
+    const { _id, name, username } = await User.findById(author_id);
+    req.body.book = {
+        id, tags, color, title, theme, text, created, author: { id: _id, name, username }
+    };
+    next();
+}
+
 export {
     loadUserTagFrequency,
     loadUserBookPopularity,
     createBook,
     loadMyBooks,
+    checkBookAccess,
+    loadBook
 };
