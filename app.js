@@ -33,8 +33,8 @@ mongoose.connect(mongo_URI, {
     useUnifiedTopology: true,
     useFindAndModify: false,
 });
-db.on('error', console.error.bind(console, 'mongoose connection error'));
-db.on('open', console.log.bind(console, 'connected to mongoose without problems'));
+db.on('error', () => console.error('mongoose connection error'));
+db.on('open', () => console.log('connected to mongoose without problems'));
 
 // setting up express server
 
