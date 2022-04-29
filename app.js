@@ -27,7 +27,7 @@ const __dirname = path.dirname(__filename);
 import mongoose from 'mongoose';
 const mongo_URI = `mongodb+srv://sbrenner:${process.env.MONGO_SECRET}@cluster0.uhhej.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const db = mongoose.connection;
-
+console.log(mongo_URI)
 mongoose.connect(mongo_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
