@@ -39,10 +39,16 @@
         <h1 class="display-1">Welcome to Build-A-Book!</h1>
         <p>Build-A-Book is a great place for you to express your collaborative creativity. Start your own public book
             with a theme and title, or go private and have fun with friends!</p>
-        <p>This is a place of endless creativity. If you have an account, please feel free to <a href="#">log in</a>. New here?
+        <p>This is a place of endless creativity. If you have an account, please feel free to <a href="#">log in</a>.
+            New here?
             <a href="#">Sign up</a> to get started on your new adventures!</p>
     </div>
 </div>
 <% } else { %>
-
+<div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <h1 class="display-1">Welcome back, <b style="color: <%= user.color %>"><%= user.username %></b></h1>
+    <p>Feel free to <a href="/browse">check out all the newest content</a>, or <a href="/create">create a new story</a>.
+        <a href="/findfriends">Find some friends</a> and
+        make the most of it!</p>
+</div>
 <% } %>
