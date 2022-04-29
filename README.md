@@ -58,6 +58,8 @@ const port = process.env.PORT || '3000';
 
 Where you can replace each instance of the template literals with your own values.
 
+Alternatively, feel free to reach out to `samuelbrenner@brandeis.edu` to possibly have access to the real values.
+
 Once that process is completed, if no other environment or process variables need to be set, the app can be run with:
 
 ```bash
