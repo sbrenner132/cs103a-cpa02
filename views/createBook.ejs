@@ -123,9 +123,9 @@
 
   const wordnode = document.getElementById("start");
   wordnode.addEventListener("keyup", (e) => {
-    const text = wordnode.value.slice(0, -1);
+    const text = wordnode.value;
     if (e.key === " ") {
-      wordnode.value = text;
+      wordnode.value = text.replace(/[^A-Za-z]/g,'');
     }
   });
 

@@ -3,15 +3,8 @@
   <!-- Container wrapper -->
   <div class="container-fluid">
     <!-- Toggle button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-mdb-toggle="collapse"
-      data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
     </button>
 
@@ -23,13 +16,13 @@
       </a>
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Browse Books In Progress</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Browse Finished Books</a>
-        </li>
         <% if (!!loggedIn) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/browse">Browse Books In Progress</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/finished">Browse Finished Books</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="/library">My Library</a>
         </li>
@@ -49,40 +42,19 @@
     <div class="d-flex align-items-center">
       <% if (!!loggedIn) { %>
       <!-- Notifications -->
-      <a
-        class="text-reset me-3 dropdown-toggle hidden-arrow"
-        href="/notifications"
-      >
+      <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="/notifications">
         <i class="fas fa-bell"></i>
-        <span class="badge rounded-pill badge-notification bg-danger"
-          ><%= notifs.length || '' %></span
-        >
+        <span class="badge rounded-pill badge-notification bg-danger"><%= notifs.length || '' %></span>
       </a>
       <!-- Avatar -->
       <div class="dropdown">
-        <a
-          class="dropdown-toggle d-flex align-items-center hidden-arrow"
-          href="#"
-          id="navbarDropdownMenuAvatar"
-          role="button"
-          data-mdb-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i
-            class="fa-solid fa-user"
-            style="color: <%= user.color %>"
-            alt="User"
-            loading="lazy"
-          ></i>
+        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
+          role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-user" style="color: <%= user.color %>" alt="User" loading="lazy"></i>
         </a>
-        <ul
-          class="dropdown-menu dropdown-menu-end"
-          aria-labelledby="navbarDropdownMenuAvatar"
-        >
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
           <li>
-            <a class="dropdown-item" href="/profile/<%= user._id %>"
-              >My Profile</a
-            >
+            <a class="dropdown-item" href="/profile/<%= user._id %>">My Profile</a>
           </li>
           <li>
             <a class="dropdown-item" href="/friends">Friends</a>
@@ -94,12 +66,7 @@
       </div>
       <% } else { %>
       <div class="text-center mt-2">
-        <a
-          href="/register"
-          class="btn btn-primary btn-block gradient-custom-2 mb-3"
-          type="button"
-          >Sign Up</a
-        >
+        <a href="/register" class="btn btn-primary btn-block gradient-custom-2 mb-3" type="button">Sign Up</a>
       </div>
       <% } %>
     </div>

@@ -31,6 +31,7 @@ const db = mongoose.connection;
 mongoose.connect(mongo_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
 });
 db.on('error', console.error.bind(console, 'mongoose connection error'));
 db.on('open', console.log.bind(console, 'connected to mongoose without problems'));
@@ -88,7 +89,17 @@ import {
     loadUser,
     loadAllFriendInfo,
 } from './routes/user.js';
-import { loadUserTagFrequency, loadUserBookPopularity, createBook, loadMyBooks, checkBookAccess, loadBook } from './routes/book.js';
+import {
+    loadUserTagFrequency,
+    loadUserBookPopularity,
+    createBook,
+    loadMyBooks,
+    checkBookAccess,
+    loadBook,
+    determineLastContribtor,
+    contribute,
+    findBooks
+} from './routes/book.js';
 import Book from './models/Book.js';
 
 app.get('/', loadNotifs, (req, res, next) => {
@@ -108,7 +119,7 @@ app.get('/create', isLoggedIn, loadNotifs, loadFriends, bookCount, (req, res, _n
 });
 
 app.post('/create', isLoggedIn, loadNotifs, createBook, async (req, res, next) => {
-    res.redirect('/');
+    res.redirect(`/book/${req.body.bookId}`);
 });
 
 app.get('/findfriends', isLoggedIn, loadNotifs, (req, res, next) => {
@@ -149,6 +160,7 @@ app.get('/profile/:id', loadNotifs, loadIncomingFriendRequests, loadUser, loadUs
     res.locals.incoming = req.body.incoming_requests || [];
     res.locals.frequencies = req.body.frequencies;
     res.locals.bookPopularity = req.body.bookPopularity;
+    res.locals.bookIds = req.body.bookIds;
     res.render('profile');
 });
 
@@ -164,11 +176,28 @@ app.get('/library', isLoggedIn, loadNotifs, loadMyBooks, (req, res, next) => {
     res.render('library');
 });
 
-app.get('/book/:id', isLoggedIn, loadNotifs, checkBookAccess, loadBook, (req, res, next) => {
+app.get('/book/:id', isLoggedIn, loadNotifs, checkBookAccess, loadBook, determineLastContribtor, (req, res, next) => {
     res.locals.notifs = req.body.notifs;
     res.locals.book = req.body.book;
+    res.locals.canContribute = req.body.canContribute;
     res.render('book')
-})
+});
+
+app.post('/book/:id', isLoggedIn, checkBookAccess, contribute, (req, res, next) => {
+    res.redirect(`/book/${req.params.id}`);
+});
+
+app.get('/browse', isLoggedIn, loadNotifs, findBooks, async (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
+    res.locals.publicBooks = req.body.publicBooks;
+    res.locals.sharedPrivateBooks = req.body.sharedPrivateBooks;
+    res.render('browse');
+});
+
+app.get('/finished', isLoggedIn, loadNotifs, async (req, res, next) => {
+    res.locals.notifs = req.body.notifs;
+    res.render('finished');
+});
 
 app.use((_req, _res, next) => {
     next(createError(404));

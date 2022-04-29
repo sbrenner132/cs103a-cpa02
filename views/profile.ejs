@@ -153,7 +153,7 @@
               </div>
               <% if (Object.keys(bookPopularity).length) { %> <% for (const key
               in bookPopularity) { %>
-              <p class="mb-1 mt-4" style="font-size: 0.77rem"><%= key %></p>
+              <p class="mb-1 mt-4" style="font-size: 0.77rem"><a href="/book/<%= bookIds[key] %>"><%= key %></a></p>
               <div class="progress rounded" style="height: 5px">
                 <div
                   class="progress-bar"

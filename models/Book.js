@@ -12,6 +12,7 @@ const bookSchema = Schema({
     collaborators: Array,
     theme: String,
     color: String,
+    last_author_id: String,
 });
 
 export default mongoose.model('Book', bookSchema)
