@@ -49,14 +49,14 @@ npm audit fix --force
 The project is almost set up - the only remaining configurations needed are some environment (`process.env`) variables. You can either set these variables when running the application, which can be done as such:
 
 ```bash
-MONGO_SECRET=x SESSION_SECRET=y PORT=z npm run dev
+MONGO_URI=x SESSION_SECRET=y PORT=z npm run dev
 ```
 
-Where `x`, `y`, and `z` are the respective values for `MONGO_SECRET`, `SESSION_SECRET`, and `PORT` specifically. Alternatively, you can override their use cases in `app.js`:
+Where `x`, `y`, and `z` are the respective values for `MONGO_URI`, `SESSION_SECRET`, and `PORT` specifically. Alternatively, you can override their use cases in `app.js`:
 
 ```js
 // app.js 28:1
-const mongo_URI = `mongodb+srv://sbrenner:${process.env.MONGO_SECRET}@cluster0.uhhej.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const mongo_URI = process.env.MONGO_URI;
 // app.js 61:9
 secret: process.env.SESSION_SECRET,
 // app.js 208:1
