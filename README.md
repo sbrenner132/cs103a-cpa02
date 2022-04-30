@@ -3,7 +3,14 @@
 ## About
 
 Build-A-Book is a site that allows you to collaboratively, and creatively, create and publish books. You can create and work on books publically, and have anyone contribute to your books, or create private books, and have your added friends contribute in smaller ways. All is made possible through Build-A-Book (name not finalized, for legal reasons, and will not be marketed. This is not a real site!).
+
+### Video Link
+
+A brief video explaining the project pitch and proof of concept can be found [here](https://drive.google.com/file/d/1T1zJS9HsaLlG77g64tKOsftUCasJiOtZ/view?usp=sharing) (https://drive.google.com/file/d/1T1zJS9HsaLlG77g64tKOsftUCasJiOtZ/view?usp=sharing).
+
 ## Download and Installation
+
+Follow the instructions below to both download the code and isntall the relevant libraries in order to run this application locally.
 
 ### Donwloading
 
@@ -73,6 +80,8 @@ node app.js
 ```
 
 Which will start the application in a state that requires reload upon any changes to server-side code.
+
+From there, you can visit the application locally at `localhost:3000`, unless you specified a different port.
 
 ## Relevant Screenshots
 
